@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.View;
 
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity
                 .positionInsideItem(true)
                 .drawable(R.drawable.line_divider)
                 .build());
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createItemTouchCallback(this));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         this.adapter = new MachineListAdapter();
         this.adapter.setOnItemClickListener(this);
@@ -72,6 +75,33 @@ public class MainActivity extends AppCompatActivity
 
         MachineListLoader machineListLoader = new MachineListLoader(this, this.adapter);
         machineListLoader.execute();
+    }
+
+    private ItemTouchHelper.Callback createItemTouchCallback(final Context context){
+        ItemTouchHelper.SimpleCallback itemTouchCallback =
+            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                      RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+//                    deleteItem(viewHolder.getAdapterPosition());
+                    int index = viewHolder.getAdapterPosition();
+                    List<Machine> machineList = adapter.getMachineList();
+                    DeleteMachineTask deleteMachineTask = new DeleteMachineTask(
+                            context,
+                            adapter,
+                            machineList.get(index)
+                    );
+                    deleteMachineTask.execute();
+                }
+            };
+        return itemTouchCallback;
     }
 
     @Override
@@ -179,6 +209,34 @@ public class MainActivity extends AppCompatActivity
             } else {
                 machineList.add(machine);
                 adapter.notifyItemInserted(machineList.size()-1);
+            }
+        }
+    }
+
+    private class DeleteMachineTask extends AsyncTask<Object,Object,Integer>{
+        Machine machine;
+        MachineListAdapter adapter;
+        Context context;
+
+        public DeleteMachineTask(Context context, MachineListAdapter adapter, Machine machine) {
+            this.machine = machine;
+            this.adapter = adapter;
+            this.context = context;
+        }
+
+        @Override
+        protected Integer doInBackground(Object... objects) {
+            MachineDAO machineDAO = new MachineDAO(new DbHelper(context));
+            return machineDAO.delete(machine);
+        }
+
+        @Override
+        protected void onPostExecute(Integer count) {
+            if(count > 0){
+                List<Machine> machineList = adapter.getMachineList();
+                int index = machineList.indexOf(machine);
+                machineList.remove(index);
+                adapter.notifyItemRemoved(index);
             }
         }
     }
