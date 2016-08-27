@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity
 
     private ItemTouchHelper.Callback createItemTouchCallback(final Context context){
         ItemTouchHelper.SimpleCallback itemTouchCallback =
-            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            new ItemTouchHelper.SimpleCallback(0,
+                    ItemTouchHelper.LEFT) {
 
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-//                    deleteItem(viewHolder.getAdapterPosition());
                     int index = viewHolder.getAdapterPosition();
                     List<Machine> machineList = adapter.getMachineList();
                     DeleteMachineTask deleteMachineTask = new DeleteMachineTask(
