@@ -195,10 +195,11 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(Machine machine) {
             List<Machine> machineList = adapter.getMachineList();
             int index = -1;
-            for (Machine item : machineList) {
-                index++;
+            ListIterator<Machine> iterator = machineList.listIterator();
+            while(iterator.hasNext()){
+                Machine item = iterator.next();
                 if(item.getId() == machine.getId()){
-                    break;
+                    index = iterator.previousIndex();
                 }
             }
 
