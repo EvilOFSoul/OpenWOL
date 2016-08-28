@@ -14,6 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -28,6 +32,7 @@ import io.github.evilofsoul.openwol.core.TargetWOL;
 import io.github.evilofsoul.openwol.core.WOL;
 import io.github.evilofsoul.openwol.core.dao.DbHelper;
 import io.github.evilofsoul.openwol.core.dao.MachineDAO;
+import io.github.evilofsoul.openwol.utils.QuickReturnScrollListener;
 
 public class MainActivity extends AppCompatActivity
         implements MachineListAdapter.MachineListOnItemClickListener {
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private List<Machine> machineList;
     private RecyclerView recyclerView;
     private MachineListAdapter adapter;
+    private FloatingActionButton fab;
     private final static int MACHINE_SETTINGS_ACTIVITY_CODE = 1;
 
     @Override
@@ -50,7 +56,10 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.startAnimation(animation);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +75,25 @@ public class MainActivity extends AppCompatActivity
                 .positionInsideItem(true)
                 .drawable(R.drawable.line_divider)
                 .build());
+        recyclerView.addOnScrollListener(new QuickReturnScrollListener() {
+            @Override
+            public void show() {
+                fab.animate()
+                        .translationY(0)
+                        .setInterpolator(new DecelerateInterpolator(2))
+                        .start();
+            }
+
+            @Override
+            public void hide() {
+                fab.animate()
+                        .translationY(
+                                fab.getHeight() + getResources().getDimension(R.dimen.default_margin)
+                        )
+                        .setInterpolator(new AccelerateInterpolator(2))
+                        .start();
+            }
+        });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createItemTouchCallback(this));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
