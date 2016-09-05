@@ -17,7 +17,7 @@ import io.github.evilofsoul.openwol.core.Machine;
  */
 public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.MachineViewHolder> {
     private List<Machine> machineList;
-    private MachineListOnItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
 
     public MachineListAdapter(List<Machine> machineList) {
         this.machineList = machineList;
@@ -27,7 +27,7 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
         this.machineList = new ArrayList<>();
     }
 
-    public void setOnItemClickListener(MachineListOnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -65,7 +65,7 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
         private TextView mac;
         private ImageButton sendPacketButton;
         private View container;
-        //private MachineListOnItemClickListener onItemClickListener;
+        //private OnItemClickListener onItemClickListener;
 
         public MachineViewHolder(View itemView) {
             super(itemView);
@@ -79,7 +79,7 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
             container.setOnClickListener(this);
         }
 
-//        public void setOnItemClickListener(MachineListOnItemClickListener onItemClickListener) {
+//        public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
 //            this.onItemClickListener = onItemClickListener;
 //        }
 
@@ -94,7 +94,7 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
         }
     }
 
-    public interface MachineListOnItemClickListener {
+    public interface OnItemClickListener {
         void onSettingsButtonClick(Machine machine, int position);
         void onItemClick(Machine machine, int position);
     }

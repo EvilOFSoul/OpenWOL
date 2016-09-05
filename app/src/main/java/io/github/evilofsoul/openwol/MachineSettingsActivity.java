@@ -1,7 +1,6 @@
 package io.github.evilofsoul.openwol;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,10 +10,8 @@ import android.widget.EditText;
 
 import io.github.evilofsoul.openwol.core.MacAddress;
 import io.github.evilofsoul.openwol.core.Machine;
-import io.github.evilofsoul.openwol.core.dao.DbHelper;
-import io.github.evilofsoul.openwol.core.dao.MachineDAO;
 
-public class AddMachineActivity extends AppCompatActivity implements View.OnClickListener {
+public class MachineSettingsActivity extends AppCompatActivity implements View.OnClickListener {
     Machine machine;
     EditText machineName;
     EditText machineMac;
@@ -24,7 +21,7 @@ public class AddMachineActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_machine);
+        setContentView(R.layout.activity_machine_settings);
 
         this.initComponent();
 

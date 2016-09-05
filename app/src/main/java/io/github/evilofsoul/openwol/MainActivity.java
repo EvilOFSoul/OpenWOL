@@ -2,7 +2,6 @@ package io.github.evilofsoul.openwol;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,10 +21,8 @@ import android.view.animation.DecelerateInterpolator;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Objects;
 
 import io.github.evilofsoul.openwol.core.Machine;
 import io.github.evilofsoul.openwol.core.TargetWOL;
@@ -35,7 +32,7 @@ import io.github.evilofsoul.openwol.core.dao.MachineDAO;
 import io.github.evilofsoul.openwol.utils.QuickReturnScrollListener;
 
 public class MainActivity extends AppCompatActivity
-        implements MachineListAdapter.MachineListOnItemClickListener {
+        implements MachineListAdapter.OnItemClickListener {
 
     private List<Machine> machineList;
     private RecyclerView recyclerView;
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddMachineActivity.class);
+                Intent intent = new Intent(MainActivity.this, MachineSettingsActivity.class);
                 startActivityForResult(intent,MACHINE_SETTINGS_ACTIVITY_CODE);
             }
         });
@@ -145,7 +142,7 @@ public class MainActivity extends AppCompatActivity
             }
             Machine machine = (Machine) data.getSerializableExtra("Machine");
             if(machine != null){
-                MachineSavingTask savingTask = new MachineSavingTask(this,adapter,machine);
+                SavingMachineTask savingTask = new SavingMachineTask(this,adapter,machine);
                 savingTask.execute();
             }
         }
@@ -153,7 +150,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSettingsButtonClick(Machine machine, int position) {
-        Intent intent = new Intent(MainActivity.this, AddMachineActivity.class);
+        Intent intent = new Intent(MainActivity.this, MachineSettingsActivity.class);
         intent.putExtra("Machine",machine);
         startActivityForResult(intent,MACHINE_SETTINGS_ACTIVITY_CODE);
     }
@@ -162,7 +159,7 @@ public class MainActivity extends AppCompatActivity
     public void onItemClick(Machine machine, int position) {
         Snackbar.make(recyclerView, machine.getName(), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-//        MachineWakeUpTask wakeUpTask = new MachineWakeUpTask(machine);
+//        WakingUpMachineTask wakeUpTask = new WakingUpMachineTask(machine);
 //        wakeUpTask.execute();
     }
 
@@ -187,12 +184,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private class MachineSavingTask extends AsyncTask<Object,Object,Machine>{
+    private class SavingMachineTask extends AsyncTask<Object,Object,Machine>{
         Machine machine;
         MachineListAdapter adapter;
         Context context;
 
-        public MachineSavingTask(Context context, MachineListAdapter adapter, Machine machine) {
+        public SavingMachineTask(Context context, MachineListAdapter adapter, Machine machine) {
             this.machine = machine;
             this.adapter = adapter;
             this.context = context;
@@ -269,11 +266,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private class MachineWakeUpTask extends AsyncTask<Object,Object,Object>{
+    private class WakingUpMachineTask extends AsyncTask<Object,Object,Object>{
 
         Machine machine;
 
-        public MachineWakeUpTask(Machine machine) {
+        public WakingUpMachineTask(Machine machine) {
             this.machine = machine;
         }
 
