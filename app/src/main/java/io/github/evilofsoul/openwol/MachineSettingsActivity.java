@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import io.github.evilofsoul.openwol.core.MacAddress;
 import io.github.evilofsoul.openwol.core.Machine;
+import io.github.evilofsoul.openwol.utils.SimpleMaskTextWatcher;
 
 public class MachineSettingsActivity extends AppCompatActivity implements View.OnClickListener {
     Machine machine;
@@ -42,6 +43,12 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
         machineMac = (EditText) findViewById(R.id.machine_mac);
         machineIp = (EditText) findViewById(R.id.machine_ip);
         machinePort = (EditText) findViewById(R.id.machine_port);
+
+        final String machineMacMask = "##-##-##-##-##-##";
+        machineMac.addTextChangedListener(new SimpleMaskTextWatcher(machineMacMask, machineMac));
+
+        final String machineIpMask = "###.###.###.###";
+        machineIp.addTextChangedListener(new SimpleMaskTextWatcher(machineIpMask, machineIp));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
