@@ -3,4 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">OpenWOL</string>
     <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="label_machine_name">Machine name</string>
+    <string name="label_machine_mac">Machine mac</string>
+    <string name="label_machine_ip">Machine ip</string>
+    <string name="label_machine_port">Machine port</string>
 </resources>
