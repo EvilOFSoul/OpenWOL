@@ -51,7 +51,7 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
 
         machinePort.setFilters(new InputFilter[]{new PortInputFilter()});
 
-        final String machineMacMask = "##-##-##-##-##-##";
+        final String machineMacMask = "##:##:##:##:##:##";
         machineMac.addTextChangedListener(new SimpleMaskTextWatcher(machineMacMask, machineMac));
         machineMac.setFilters(new InputFilter[]{new MacInputFilter()});
 

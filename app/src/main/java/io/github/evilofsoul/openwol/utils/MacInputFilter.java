@@ -20,7 +20,7 @@ public class MacInputFilter implements InputFilter {
     }
 
     private boolean isDivider(char input){
-        if(input == '-'){
+        if(input == ':'){
             return true;
         }
         return false;
