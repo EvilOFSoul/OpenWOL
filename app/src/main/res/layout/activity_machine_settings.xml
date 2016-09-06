@@ -57,6 +57,7 @@
                 android:id="@+id/machine_ip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="1234567890."
                 android:hint="@string/label_machine_ip"/>
         </android.support.design.widget.TextInputLayout>
 

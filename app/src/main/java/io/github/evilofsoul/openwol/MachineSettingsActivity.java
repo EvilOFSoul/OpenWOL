@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 
 import io.github.evilofsoul.openwol.core.MacAddress;
 import io.github.evilofsoul.openwol.core.Machine;
+import io.github.evilofsoul.openwol.utils.MacInputFilter;
+import io.github.evilofsoul.openwol.utils.PortInputFilter;
 import io.github.evilofsoul.openwol.utils.SimpleMaskTextWatcher;
 
 public class MachineSettingsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,8 +49,11 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
         machineIp = (EditText) findViewById(R.id.machine_ip);
         machinePort = (EditText) findViewById(R.id.machine_port);
 
+        machinePort.setFilters(new InputFilter[]{new PortInputFilter()});
+
         final String machineMacMask = "##-##-##-##-##-##";
         machineMac.addTextChangedListener(new SimpleMaskTextWatcher(machineMacMask, machineMac));
+        machineMac.setFilters(new InputFilter[]{new MacInputFilter()});
 
         final String machineIpMask = "###.###.###.###";
         machineIp.addTextChangedListener(new SimpleMaskTextWatcher(machineIpMask, machineIp));
