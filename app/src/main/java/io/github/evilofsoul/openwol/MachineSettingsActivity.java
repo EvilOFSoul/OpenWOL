@@ -55,9 +55,6 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
         machineMac.addTextChangedListener(new SimpleMaskTextWatcher(machineMacMask, machineMac));
         machineMac.setFilters(new InputFilter[]{new MacInputFilter()});
 
-        final String machineIpMask = "###.###.###.###";
-        machineIp.addTextChangedListener(new SimpleMaskTextWatcher(machineIpMask, machineIp));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
