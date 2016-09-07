@@ -27,11 +27,7 @@ public class MacAddress implements Serializable{ // TODO: 06.08.2016 refactor th
     public String toString() {
         String str[] = new String[this.mac.length];
         for(int i=0; i<this.mac.length; i++){
-            String tmpStr = Integer.toHexString((int)mac[i]);
-            if(tmpStr.length() == 1){
-                tmpStr = "0"+ tmpStr;
-            }
-            str[i] = tmpStr;
+            str[i] = String.format("%02x",mac[i]);
         }
         return this.joinSrings(str,":");
     }
