@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import io.github.evilofsoul.openwol.core.Machine;
-import io.github.evilofsoul.openwol.core.TargetWOL;
-import io.github.evilofsoul.openwol.core.WOL;
+import io.github.evilofsoul.openwol.core.TargetWakeOnLan;
+import io.github.evilofsoul.openwol.core.WakeOnLan;
 import io.github.evilofsoul.openwol.core.dao.DbHelper;
 import io.github.evilofsoul.openwol.core.dao.MachineDAO;
 import io.github.evilofsoul.openwol.utils.QuickReturnScrollListener;
@@ -157,10 +157,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(Machine machine, int position) {
+        WakingUpMachineTask wakeUpTask = new WakingUpMachineTask(machine);
+        wakeUpTask.execute();
         Snackbar.make(recyclerView, machine.getName(), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-//        WakingUpMachineTask wakeUpTask = new WakingUpMachineTask(machine);
-//        wakeUpTask.execute();
     }
 
     private class MachineListLoader extends AsyncTask<Object,Object,List<Machine>>{
@@ -276,13 +276,22 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected Object doInBackground(Object... objects) {
-            WOL wol = new TargetWOL();
+            WakeOnLan wakeOnLan = WakeOnLan.create(getWakeOnLanType(machine));
             try {
-                wol.wakeUp(machine);
+                wakeOnLan.wakeUp(machine);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
+        }
+
+
+        private WakeOnLan.Type getWakeOnLanType(Machine machine){
+            if(machine.getIp().length() != 0){
+                return WakeOnLan.Type.TARGET;
+            }
+            
+            return WakeOnLan.Type.BROADCAST;
         }
     }
 }

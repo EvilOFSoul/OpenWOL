@@ -2,6 +2,8 @@ package io.github.evilofsoul.openwol.core;
 
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Joiner;
+
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,8 +11,14 @@ import java.util.regex.Pattern;
 /**
  * Created by Yevhenii on 02.08.2016.
  */
-public class MacAddress implements Serializable{ // TODO: 06.08.2016 refactor this class!!!! mac string array to byte
+public class MacAddress implements Serializable{
     private byte mac[] = new byte[6];
+
+    public static MacAddress create(String mac){
+        MacAddress macAddress = new MacAddress();
+        macAddress.set(mac);
+        return macAddress;
+    }
 
     public byte[] get() {
         return mac;
@@ -29,11 +37,11 @@ public class MacAddress implements Serializable{ // TODO: 06.08.2016 refactor th
         for(int i=0; i<this.mac.length; i++){
             str[i] = String.format("%02x",mac[i]);
         }
-        return this.joinSrings(str,":");
+        return Joiner.on(":").join(str);
     }
 
     public void set(String[] mac) {
-        String tmpMac = this.joinSrings(mac, ":");// TODO: 02.08.2016 Remove calling of this function
+        String tmpMac = Joiner.on(":").join(mac);
         if(!MacAddress.isValid(tmpMac)){
             throw new IllegalArgumentException(); // TODO: 02.08.2016 write description
         }
@@ -46,15 +54,6 @@ public class MacAddress implements Serializable{ // TODO: 06.08.2016 refactor th
             throw new IllegalArgumentException(); // TODO: 02.08.2016 write description
         }
         this.mac = this.stringToByte(this.splitMac(mac));
-    }
-
-    private final String joinSrings(String[] array, String delimiter){ // TODO: 02.08.2016 THIS IS SHIT!!!
-        String result = "";
-        for (int i = 0; i < array.length-1; i++) {
-            result += array[i]+delimiter;
-        }
-        result+=array[array.length-1];
-        return result;
     }
 
     private String preValidate(String mac){

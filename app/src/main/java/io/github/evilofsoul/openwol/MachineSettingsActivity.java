@@ -124,8 +124,7 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
                 this.machine.setPort(port);
             }
 
-            MacAddress macAddress = new MacAddress();
-            macAddress.set(machineMac.getText().toString());
+            MacAddress macAddress = MacAddress.create(machineMac.getText().toString());
             this.machine.setMac(macAddress);
 
             Intent intent = new Intent();

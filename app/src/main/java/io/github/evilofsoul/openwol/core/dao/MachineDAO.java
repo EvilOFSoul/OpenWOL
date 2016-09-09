@@ -34,8 +34,7 @@ public class MachineDAO extends GenericDAO<Machine> {
 
         int machineId = query.getInt(0);
         String machineName = query.getString(1);
-        MacAddress machineMac = new MacAddress();
-        machineMac.set(query.getString(2));
+        MacAddress machineMac = MacAddress.create(query.getString(2));
         String machineIP = query.getString(3);
         int machinePort = query.getInt(4);
 
