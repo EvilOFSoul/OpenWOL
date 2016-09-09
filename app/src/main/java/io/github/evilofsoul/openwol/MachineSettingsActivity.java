@@ -11,11 +11,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.github.evilofsoul.openwol.core.MacAddress;
 import io.github.evilofsoul.openwol.core.Machine;
+import io.github.evilofsoul.openwol.utils.IpTextValidator;
 import io.github.evilofsoul.openwol.utils.MacInputFilter;
-import io.github.evilofsoul.openwol.utils.PortInputFilter;
+import io.github.evilofsoul.openwol.utils.PortTextValidator;
+import io.github.evilofsoul.openwol.utils.RequiredFieldTextValidator;
 import io.github.evilofsoul.openwol.utils.SimpleMaskTextWatcher;
+import io.github.evilofsoul.openwol.utils.TextValidator;
 
 public class MachineSettingsActivity extends AppCompatActivity implements View.OnClickListener {
     Machine machine;
@@ -23,6 +29,8 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
     EditText machineMac;
     EditText machineIp;
     EditText machinePort;
+    
+    List<TextValidator> validatorList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,9 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
             this.machineName.setText(machine.getName());
             this.machineMac.setText(machine.getMac().toString());
             this.machineIp.setText(machine.getIp());
-            this.machinePort.setText(Integer.toString(machine.getPort()));
+            if(machine.getPort() != 0) {
+                this.machinePort.setText(Integer.toString(machine.getPort()));
+            }
         } else {
             this.machine = new Machine();
         }
@@ -49,7 +59,7 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
         machineIp = (EditText) findViewById(R.id.machine_ip);
         machinePort = (EditText) findViewById(R.id.machine_port);
 
-        machinePort.setFilters(new InputFilter[]{new PortInputFilter()});
+        this.initValidators();
 
         final String machineMacMask = "##:##:##:##:##:##";
         machineMac.addTextChangedListener(new SimpleMaskTextWatcher(machineMacMask, machineMac));
@@ -72,17 +82,48 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
         fab.setAnimation(animation);
     }
 
+    private void initValidators(){
+        TextValidator requiredName = new RequiredFieldTextValidator(machineName);
+        machineName.addTextChangedListener(requiredName);
+        validatorList.add(requiredName);
+
+        TextValidator requiredMac = new RequiredFieldTextValidator(machineMac);
+        machineMac.addTextChangedListener(requiredMac);
+        validatorList.add(requiredMac);
+
+        TextValidator ipValidator = new IpTextValidator(machineIp);
+        machineIp.addTextChangedListener(ipValidator);
+        validatorList.add(ipValidator);
+
+        TextValidator portValidator = new PortTextValidator(machinePort);
+        machinePort.addTextChangedListener(portValidator);
+        validatorList.add(portValidator);
+    }
+
+    private boolean validateForm(){
+        boolean isValid = true;
+        for (TextValidator validator : validatorList) {
+            if(!validator.validate()){
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
+    
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab2){
-            EditText machineName = (EditText) findViewById(R.id.machine_name);
-            EditText machineMac = (EditText) findViewById(R.id.machine_mac);
-            EditText machineIp = (EditText) findViewById(R.id.machine_ip);
-            EditText machinePort = (EditText) findViewById(R.id.machine_port);
+            if(!validateForm()){
+                return;
+            }
 
             this.machine.setName(machineName.getText().toString());
             this.machine.setIp(machineIp.getText().toString());
-            this.machine.setPort(Integer.parseInt(machinePort.getText().toString()));
+            if(machinePort.getText().length() != 0){
+                int port = Integer.parseInt(machinePort.getText().toString());
+                this.machine.setPort(port);
+            }
+
             MacAddress macAddress = new MacAddress();
             macAddress.set(machineMac.getText().toString());
             this.machine.setMac(macAddress);
