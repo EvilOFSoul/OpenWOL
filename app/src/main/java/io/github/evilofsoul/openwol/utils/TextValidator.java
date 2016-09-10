@@ -33,6 +33,11 @@ public abstract class TextValidator implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if(layout != null && layout.getError() != null){
+            layout.setError(null);
+        } else if(editText.getError() != null) {
+            editText.setError(null);
+        }
     }
 
     @Override
@@ -48,8 +53,10 @@ public abstract class TextValidator implements TextWatcher {
 
     protected void setError(String msg){
         if(layout != null){
-            layout.setError(msg);
-        } else {
+            if(layout.getError() == null) {
+                layout.setError(msg);
+            }
+        } else if(editText.getError() == null) {
             editText.setError(msg);
         }
     }
