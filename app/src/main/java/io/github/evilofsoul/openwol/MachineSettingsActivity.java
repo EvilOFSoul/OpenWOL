@@ -18,6 +18,7 @@ import io.github.evilofsoul.openwol.core.MacAddress;
 import io.github.evilofsoul.openwol.core.Machine;
 import io.github.evilofsoul.openwol.utils.IpTextValidator;
 import io.github.evilofsoul.openwol.utils.MacInputFilter;
+import io.github.evilofsoul.openwol.utils.MacTextValidator;
 import io.github.evilofsoul.openwol.utils.PortTextValidator;
 import io.github.evilofsoul.openwol.utils.RequiredFieldTextValidator;
 import io.github.evilofsoul.openwol.utils.SimpleMaskTextWatcher;
@@ -90,6 +91,10 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
         TextValidator requiredMac = new RequiredFieldTextValidator(machineMac);
         machineMac.addTextChangedListener(requiredMac);
         validatorList.add(requiredMac);
+
+        TextValidator macValidator = new MacTextValidator(machineMac);
+        machineMac.addTextChangedListener(macValidator);
+        validatorList.add(macValidator);
 
         TextValidator ipValidator = new IpTextValidator(machineIp);
         machineIp.addTextChangedListener(ipValidator);
