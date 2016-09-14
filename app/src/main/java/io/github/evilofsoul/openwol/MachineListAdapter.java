@@ -15,9 +15,10 @@ import io.github.evilofsoul.openwol.core.Machine;
 /**
  * Created by Yevhenii on 13.08.2016.
  */
-public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.MachineViewHolder> {
+public class MachineListAdapter extends RecyclerView.Adapter {
     private List<Machine> machineList;
     private OnItemClickListener onItemClickListener;
+    private final static int TYPE_FOOTER = Integer.MAX_VALUE;
 
     public MachineListAdapter(List<Machine> machineList) {
         this.machineList = machineList;
@@ -41,23 +42,41 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
     }
 
     @Override
-    public MachineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
-        return new MachineViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType != MachineListAdapter.TYPE_FOOTER) {
+            View view = LayoutInflater
+                    .from(parent.getContext())
+                    .inflate(R.layout.list_item, parent, false);
+            return new MachineViewHolder(view);
+        } else {
+            View view = LayoutInflater
+                    .from(parent.getContext())
+                    .inflate(R.layout.list_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(MachineViewHolder holder, int position) {
-        Machine machine = machineList.get(position);
-        holder.name.setText(machine.getName());
-        holder.mac.setText(machine.getMac().toString());
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof MachineViewHolder) {
+            MachineViewHolder machineViewHolder = (MachineViewHolder) holder;
+            Machine machine = machineList.get(position);
+            machineViewHolder.name.setText(machine.getName());
+            machineViewHolder.mac.setText(machine.getMac().toString());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return machineList.size();
+        return machineList.size()+1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position == machineList.size()){
+            return MachineListAdapter.TYPE_FOOTER;
+        }
+        return super.getItemViewType(position);
     }
 
     class MachineViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -91,6 +110,12 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
             } else {
                 onItemClickListener.onItemClick(machineList.get(itemId), itemId);
             }
+        }
+    }
+
+    class FooterViewHolder extends RecyclerView.ViewHolder {
+        public FooterViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
