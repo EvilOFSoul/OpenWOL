@@ -49,26 +49,10 @@ public class MacAddress implements Serializable{
     }
 
     public void set(String mac) {
-        mac = this.preValidate(mac);
         if(!MacAddress.isValid(mac)) {
             throw new IllegalArgumentException(); // TODO: 02.08.2016 write description
         }
         this.mac = this.stringToByte(this.splitMac(mac));
-    }
-
-    private String preValidate(String mac){
-        mac = mac.toLowerCase();
-        if(mac.matches("([a-z0-9]){12}")){
-            String tmpMac = "";
-            for(int i=0; i<mac.length(); i++){
-                if((i > 1) && (i % 2 == 0)) {
-                    tmpMac += ":";
-                }
-                tmpMac += mac.charAt(i);
-            }
-            mac = tmpMac;
-        }
-        return mac;
     }
 
     @NonNull
@@ -77,7 +61,7 @@ public class MacAddress implements Serializable{
     }
 
     public static boolean isValid(String mac){
-        final Pattern pat = Pattern.compile("((([0-9a-fA-F]){2}[-:]){5}([0-9a-fA-F]){2})");
+        final Pattern pat = Pattern.compile("^((([0-9a-fA-F]){2}[-:]){5}([0-9a-fA-F]){2})$");
         final Matcher m = pat.matcher(mac);
 
         if(m.find()) {
