@@ -1,11 +1,40 @@
 <resources>
+    <!--App name-->
     <string name="app_name">OpenWOL</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_main">OpenWOL</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
-    <string name="label_machine_name">Machine name</string>
-    <string name="label_machine_mac">Machine mac</string>
-    <string name="label_machine_ip">Machine ip</string>
-    <string name="label_machine_port">Machine port</string>
+    <!--Menu-->
+    <string name="action_settings">Settings</string>
+
+    <!--Activity titles-->
+    <string name="title_activity_main">OpenWOL</string>
+    <string name="title_activity_machine_settings">Machine settings</string>
+    
+    <!--Main activity-->
+    <string name="main_wake_up">%1$s, wake up!</string>
+
+    <!--Machine settings-->
+    <string name="machine_settings_machine_name">Machine name *</string>
+    <string name="machine_settings_machine_mac">Machine mac *</string>
+    <string name="machine_settings_machine_ip">Machine ip</string>
+    <string name="machine_settings_machine_port">Machine port</string>
+
+    <!--List item-->
+    <string name="list_item_machine_name">Machine name</string>
+    <string name="list_item_machine_mac">Machine MAC</string>
+
+    <!--Ip text validator-->
+    <string name="ip_text_validator_format_error">IP must consist of 4 parts, which are separated by dot</string>
+    <string name="ip_text_vlidator_invalid_part_error">Even part of IP must be between 0 and 255</string>
+    <string name="ip_text_validator_end_with_dor_error">IP must not end with dot</string>
+
+   <!--Mac text validator-->
+    <string name="mac_text_validator_format_error">"MAC must contain six hex numbers separated by \":\" "</string>
+
+   <!--Port text validator-->
+    <string name="port_text_validator_out_of_range_error">Port value must be between 1 and 65535</string>
+    <string name="port_text_validator_format_error">Port value must contain only decimal numbers</string>
+
+    <!--Required field text validator-->
+    <string name="required_field_text_validator_error">This field is required</string>
+
 </resources>

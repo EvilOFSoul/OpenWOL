@@ -3,6 +3,7 @@ package io.github.evilofsoul.openwol.utils;
 import android.text.Editable;
 import android.widget.EditText;
 
+import io.github.evilofsoul.openwol.R;
 import io.github.evilofsoul.openwol.core.MacAddress;
 
 /**
@@ -20,7 +21,7 @@ public class MacTextValidator extends TextValidator {
         }
 
         if(!MacAddress.isValid(editable.toString())){
-            this.setError("MAC must contain six hex numbers separated by \":\" ");
+            this.setError(context.getString(R.string.mac_text_validator_format_error));
             return false;
         }
         return true;

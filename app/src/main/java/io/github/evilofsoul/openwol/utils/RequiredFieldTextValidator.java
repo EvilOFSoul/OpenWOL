@@ -3,6 +3,8 @@ package io.github.evilofsoul.openwol.utils;
 import android.text.Editable;
 import android.widget.EditText;
 
+import io.github.evilofsoul.openwol.R;
+
 /**
  * Created by Yevhenii on 07.09.2016.
  */
@@ -16,7 +18,7 @@ public class RequiredFieldTextValidator extends TextValidator {
     @Override
     protected boolean validate(EditText editText, Editable editable) {
         if(editable.toString().trim().length() == 0){
-            this.setError("This field is required");
+            this.setError(context.getString(R.string.required_field_text_validator_error));
             return false;
         }
         return true;

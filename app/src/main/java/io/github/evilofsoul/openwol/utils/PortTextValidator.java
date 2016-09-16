@@ -3,6 +3,8 @@ package io.github.evilofsoul.openwol.utils;
 import android.text.Editable;
 import android.widget.EditText;
 
+import io.github.evilofsoul.openwol.R;
+
 /**
  * Created by Yevhenii on 09.09.2016.
  */
@@ -23,11 +25,11 @@ public class PortTextValidator extends TextValidator {
         try {
             int port = Integer.parseInt(editable.toString().trim());
             if(port < MIN_PORT_NUMBER || port > MAX_PORT_NUMBER){
-                this.setError("Port value must be between 1 and 65535");
+                this.setError(context.getString(R.string.port_text_validator_out_of_range_error));
                 return false;
             }
         } catch (NumberFormatException nfe){
-            this.setError("Port value must contain only decimal numbers");
+            this.setError(context.getString(R.string.port_text_validator_format_error));
             return false;
         }
         return true;

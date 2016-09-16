@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
-        android:text="Name of machine"
+        android:text="@string/list_item_machine_name"
         android:textColor="@android:color/primary_text_light"
         android:textSize="@dimen/title_font_size"
         android:layout_marginTop="@dimen/item_block_top_padding"/>
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_below="@+id/machineName"
-        android:text="MAC Address"
+        android:text="@string/list_item_machine_mac"
         android:fontFamily="sans-serif-light"
         android:textColor="@android:color/secondary_text_light"
         android:textSize="@dimen/description_font_size" />

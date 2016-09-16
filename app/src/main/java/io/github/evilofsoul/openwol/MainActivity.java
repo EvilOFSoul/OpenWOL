@@ -152,7 +152,8 @@ public class MainActivity extends AppCompatActivity
     public void onItemClick(Machine machine, int position) {
         WakingUpMachineTask wakeUpTask = new WakingUpMachineTask(machine);
         wakeUpTask.execute();
-        Snackbar.make(recyclerView, machine.getName(), Snackbar.LENGTH_LONG)
+        String msg = getString(R.string.main_wake_up, machine.getName());
+        Snackbar.make(recyclerView, msg, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 

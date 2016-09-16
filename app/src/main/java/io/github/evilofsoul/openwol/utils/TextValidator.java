@@ -1,5 +1,6 @@
 package io.github.evilofsoul.openwol.utils;
 
+import android.content.Context;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,10 +12,12 @@ import android.widget.EditText;
 public abstract class TextValidator implements TextWatcher {
 
     private EditText editText;
+    protected Context context;
     private TextInputLayout layout;
 
     public TextValidator(EditText editText) {
         this.editText = editText;
+        this.context = editText.getContext();
         if(editText.getParent() instanceof TextInputLayout){
             layout = (TextInputLayout) editText.getParent();
             layout.setErrorEnabled(true);
