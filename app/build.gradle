@@ -10,6 +10,8 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "0.1"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -26,4 +28,13 @@ dependencies {
     compile 'com.android.support:design:24.1.1'
     compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     compile 'com.google.guava:guava:19.0'
+
+    // App's dependencies, including test
+
+
+    // Testing-only dependencies
+    androidTestCompile 'com.android.support:support-annotations:24.1.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
 }
