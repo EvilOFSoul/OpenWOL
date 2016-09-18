@@ -1,0 +1,28 @@
+## Customize the test machine
+machine:
+   environment:
+     ANDROID_HOME: /usr/local/android-sdk-linux
+
+## Customize dependencies
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "tools, platform-tools, android-24"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.1"
+
+  override:
+    - chmod +x gradlew
+    - ./gradlew dependencies
+
+## Customize test commands
+test:
+  override:
+    # Build the code
+    - ./gradlew assembleDebug
+
+    # Execute Unit Tests
+    - ./gradlew test
+
+  post:
+    - rm ./app/build/outputs/apk/app-debug-unaligned.apk
+    - cp -r app/build/outputs/apk $CIRCLE_ARTIFACTS
+    - cp -r app/build/test-results/debug/ $CIRCLE_TEST_REPORTS
