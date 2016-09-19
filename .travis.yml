@@ -1,0 +1,23 @@
+language: android
+android:
+  components:
+    - platform-tools
+    - tools
+    # The BuildTools version used by your project
+    - build-tools-24.0.1
+    # The SDK version used to compile your project
+    - android-24
+
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+script:
+    # Build the code
+    - ./gradlew assembleDebug
+
+    # Execute Unit Tests
+    - ./gradlew test
