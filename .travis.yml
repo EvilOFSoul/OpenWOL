@@ -6,8 +6,12 @@ android:
     - platform-tools
     - tools
     - build-tools-24.0.1
-    - android-22
+    - extra-android-support
     - android-24
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
