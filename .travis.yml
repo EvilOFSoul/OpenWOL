@@ -1,6 +1,13 @@
 language: android
-
 jdk: oraclejdk8
+
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-24.0.2
+    - android-22
+    - android-24
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -12,9 +19,6 @@ cache:
 before_install:
   - chmod +x gradlew
   # Install base Android SDK
-  - echo y | android update sdk --no-ui --all --filter "tools, platform-tools, android-24"
-  - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.1"
-  - ./gradlew dependencies
 
 script:
     # Build the code
