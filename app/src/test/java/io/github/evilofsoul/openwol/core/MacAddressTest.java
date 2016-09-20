@@ -1,12 +1,12 @@
-package io.github.evilofsoul.openwol;
+package io.github.evilofsoul.openwol.core;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import io.github.evilofsoul.openwol.core.MacAddress;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -87,14 +87,14 @@ public class MacAddressTest{
     @Test
     public void isValid_ValidData_True(){
         for (String mac : validData) {
-            assertEquals(MacAddress.isValid(mac), true);
+            assertTrue(macAddress.isValid(mac));
         }
     }
 
     @Test
     public void isValid_NonValidData_False(){
         for (String mac : nonValidData) {
-            assertEquals(MacAddress.isValid(mac), false);
+            assertFalse(macAddress.isValid(mac));
         }
     }
 
@@ -102,7 +102,7 @@ public class MacAddressTest{
     public void get(){
         macAddress.set("02:92:7A:75:EC:E3");
         byte[] byteMac = {2,-110,122,117,-20,-29};
-        assertArrayEquals(macAddress.get(),byteMac);
+        assertThat(macAddress.get(),is(byteMac));
     }
 
     @Test
@@ -110,9 +110,10 @@ public class MacAddressTest{
         macAddress.set("02:92:7A:75:EC:E3");
         byte[] byteMac = {2,-110,122,117,-20,-29};
         for(int i=0; i<MAC_PART_COUNT; i++){
-            assertEquals(macAddress.get(i), byteMac[i]);
+            assertThat(macAddress.get(i),is(byteMac[i]));
         }
     }
+
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void get_InvalidIndex_Exception(){
         macAddress.get(MAC_PART_COUNT+1);

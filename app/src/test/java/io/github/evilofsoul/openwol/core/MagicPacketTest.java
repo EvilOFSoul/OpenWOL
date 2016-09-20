@@ -1,4 +1,4 @@
-package io.github.evilofsoul.openwol;
+package io.github.evilofsoul.openwol.core;
 
 import org.junit.Test;
 
@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.github.evilofsoul.openwol.core.MacAddress;
-import io.github.evilofsoul.openwol.core.MagicPacket;
-
-import static org.junit.Assert.assertArrayEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by Yevhenii on 15.09.2016.
@@ -32,7 +30,7 @@ public class MagicPacketTest {
 
         final Byte[] expectedValue = expectedValueAsList.toArray(new Byte[expectedValueAsList.size()]);
 
-        assertArrayEquals(value,toPrimitiveByte(expectedValue));
+        assertThat(value,is(toPrimitiveByte(expectedValue)));
     }
 
     private byte[] toPrimitiveByte(Byte[] array){

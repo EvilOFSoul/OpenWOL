@@ -1,7 +1,10 @@
-package io.github.evilofsoul.openwol;
+package io.github.evilofsoul.openwol.core;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+
+import io.github.evilofsoul.openwol.core.MacAddressTest;
+import io.github.evilofsoul.openwol.core.MagicPacketTest;
 
 
 /**
