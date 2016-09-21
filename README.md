@@ -3,6 +3,9 @@ OpenWOL
 
 OpenWOL is a Wake-on-Lan application.
 
+CircleCI: [![CircleCI](https://circleci.com/gh/EvilOFSoul/OpenWOL.svg?style=shield)](https://circleci.com/gh/EvilOFSoul/OpenWOL)
+Travis CI: [![Build Status](https://travis-ci.org/EvilOFSoul/OpenWOL.svg)](https://travis-ci.org/EvilOFSoul/OpenWOL)
+
 Features
 ---------
 
