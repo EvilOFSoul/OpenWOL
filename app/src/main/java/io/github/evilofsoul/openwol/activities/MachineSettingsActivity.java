@@ -1,4 +1,4 @@
-package io.github.evilofsoul.openwol;
+package io.github.evilofsoul.openwol.activities;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +14,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.evilofsoul.openwol.R;
 import io.github.evilofsoul.openwol.core.MacAddress;
 import io.github.evilofsoul.openwol.core.Machine;
 import io.github.evilofsoul.openwol.utils.IpTextValidator;

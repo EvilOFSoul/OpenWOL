@@ -1,4 +1,4 @@
-package io.github.evilofsoul.openwol;
+package io.github.evilofsoul.openwol.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +23,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
 
+import io.github.evilofsoul.openwol.utils.MachineListAdapter;
+import io.github.evilofsoul.openwol.R;
 import io.github.evilofsoul.openwol.core.Machine;
-import io.github.evilofsoul.openwol.core.TargetWakeOnLan;
 import io.github.evilofsoul.openwol.core.WakeOnLan;
 import io.github.evilofsoul.openwol.core.dao.DbHelper;
 import io.github.evilofsoul.openwol.core.dao.MachineDAO;
