@@ -12,14 +12,14 @@ Features
 * Operation with machine's data (adding, storing, removing)
 * Turning on a machine via WI-FI
 
-What Is Currently Working
+Current tasks
 ---------
 
 * Releasing the first version of the app.
 * Finishing implementation of material design.
 * Localization (Ua, Ru).
 
-What Is Future Working
+Future Plans
 ---------
 
 * Adding a search tool
@@ -29,7 +29,7 @@ What Is Future Working
 Getting OpenWOL
 ---------
 
-In this moment, compiling OpenWOL from source is the only way to get it. In the future will be added links to apk files.
+In this moment, compiling OpenWOL from source is the only way to get it. In the future links to apk files will be added.
 
 
 Compiling OpenWOl From Source with Android Studio
