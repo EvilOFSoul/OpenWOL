@@ -34,13 +34,13 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="15">
+            app:counterMaxLength="30">
             <EditText
                 android:id="@+id/machine_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/machine_settings_machine_name"
-                android:maxLength="15"/>
+                android:maxLength="30"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
