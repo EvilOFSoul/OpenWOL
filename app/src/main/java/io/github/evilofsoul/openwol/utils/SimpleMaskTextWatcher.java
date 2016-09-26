@@ -43,21 +43,21 @@ public class SimpleMaskTextWatcher implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-        if(!charSequence.toString().equals(current)) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if(!editable.toString().equals(current)) {
             editText.removeTextChangedListener(this);
 
-            String formatted = format(charSequence.toString());
+            String formatted = format(editable.toString());
             current = formatted;
             editText.setText(formatted);
             editText.setSelection(formatted.length());
 
             editText.addTextChangedListener(this);
         }
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
     }
 
     private String format(String str){
