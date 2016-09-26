@@ -23,6 +23,5 @@ test:
     - ./gradlew test
 
   post:
-    - rm ./app/build/outputs/apk/app-debug-unaligned.apk
     - cp -r app/build/outputs/apk $CIRCLE_ARTIFACTS
     - cp -r app/build/test-results/debug/ $CIRCLE_TEST_REPORTS
