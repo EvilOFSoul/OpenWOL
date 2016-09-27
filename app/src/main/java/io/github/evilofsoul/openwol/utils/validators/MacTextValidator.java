@@ -1,4 +1,4 @@
-package io.github.evilofsoul.openwol.utils;
+package io.github.evilofsoul.openwol.utils.validators;
 
 import android.text.Editable;
 import android.widget.EditText;

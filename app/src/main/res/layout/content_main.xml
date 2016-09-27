@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_main">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/machine_list"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:scrollbars="vertical" />

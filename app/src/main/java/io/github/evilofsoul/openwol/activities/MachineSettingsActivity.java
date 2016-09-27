@@ -17,13 +17,13 @@ import java.util.List;
 import io.github.evilofsoul.openwol.R;
 import io.github.evilofsoul.openwol.core.MacAddress;
 import io.github.evilofsoul.openwol.core.Machine;
-import io.github.evilofsoul.openwol.utils.IpTextValidator;
+import io.github.evilofsoul.openwol.utils.validators.IpTextValidator;
 import io.github.evilofsoul.openwol.utils.MacInputFilter;
-import io.github.evilofsoul.openwol.utils.MacTextValidator;
-import io.github.evilofsoul.openwol.utils.PortTextValidator;
-import io.github.evilofsoul.openwol.utils.RequiredFieldTextValidator;
+import io.github.evilofsoul.openwol.utils.validators.MacTextValidator;
+import io.github.evilofsoul.openwol.utils.validators.PortTextValidator;
+import io.github.evilofsoul.openwol.utils.validators.RequiredFieldTextValidator;
 import io.github.evilofsoul.openwol.utils.SimpleMaskTextWatcher;
-import io.github.evilofsoul.openwol.utils.TextValidator;
+import io.github.evilofsoul.openwol.utils.validators.TextValidator;
 
 public class MachineSettingsActivity extends AppCompatActivity implements View.OnClickListener {
     Machine machine;

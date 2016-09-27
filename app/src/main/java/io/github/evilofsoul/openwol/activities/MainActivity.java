@@ -2,7 +2,6 @@ package io.github.evilofsoul.openwol.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,23 +18,21 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.ListIterator;
 
+import io.github.evilofsoul.openwol.utils.MachineListDeleteMachineTask;
 import io.github.evilofsoul.openwol.utils.MachineListAdapter;
 import io.github.evilofsoul.openwol.R;
 import io.github.evilofsoul.openwol.core.Machine;
-import io.github.evilofsoul.openwol.core.WakeOnLan;
-import io.github.evilofsoul.openwol.core.dao.DbHelper;
-import io.github.evilofsoul.openwol.core.dao.MachineDAO;
+import io.github.evilofsoul.openwol.utils.MachineListLoader;
 import io.github.evilofsoul.openwol.utils.QuickReturnScrollListener;
+import io.github.evilofsoul.openwol.utils.MachineListSavingMachineTask;
+import io.github.evilofsoul.openwol.utils.WakingUpMachineTask;
 
 public class MainActivity extends AppCompatActivity
         implements MachineListAdapter.OnItemClickListener {
 
-    private List<Machine> machineList;
-    private RecyclerView recyclerView;
+    private RecyclerView machineListView;
     private MachineListAdapter adapter;
     private FloatingActionButton fab;
     private final static int MACHINE_SETTINGS_ACTIVITY_CODE = 1;
@@ -45,10 +42,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.initComponent();
+        this.initComponents();
     }
 
-    private void initComponent(){
+    private void initComponents(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -65,14 +62,22 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+        initMachineListView();
+
+        MachineListLoader machineListLoader = new MachineListLoader(this, this.adapter);
+        machineListLoader.execute();
+    }
+
+    private void initMachineListView(){
+
+        machineListView = (RecyclerView) findViewById(R.id.machine_list);
+        machineListView.setHasFixedSize(true);
+        machineListView.setLayoutManager(new LinearLayoutManager(this));
+        machineListView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .positionInsideItem(true)
                 .drawable(R.drawable.line_divider)
                 .build());
-        recyclerView.addOnScrollListener(new QuickReturnScrollListener() {
+        machineListView.addOnScrollListener(new QuickReturnScrollListener() {
             @Override
             public void show() {
                 fab.animate()
@@ -92,14 +97,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createItemTouchCallback(this));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(machineListView);
 
         this.adapter = new MachineListAdapter();
         this.adapter.setOnItemClickListener(this);
-        recyclerView.setAdapter(this.adapter);
-
-        MachineListLoader machineListLoader = new MachineListLoader(this, this.adapter);
-        machineListLoader.execute();
+        machineListView.setAdapter(this.adapter);
     }
 
     private ItemTouchHelper.Callback createItemTouchCallback(final Context context){
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity
                 public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     int index = viewHolder.getAdapterPosition();
                     List<Machine> machineList = adapter.getMachineList();
-                    DeleteMachineTask deleteMachineTask = new DeleteMachineTask(
+                    MachineListDeleteMachineTask deleteMachineTask = new MachineListDeleteMachineTask(
                             context,
                             adapter,
                             machineList.get(index)
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity
             }
             Machine machine = (Machine) data.getSerializableExtra("Machine");
             if(machine != null){
-                SavingMachineTask savingTask = new SavingMachineTask(this,adapter,machine);
+                MachineListSavingMachineTask savingTask = new MachineListSavingMachineTask(this,adapter,machine);
                 savingTask.execute();
             }
         }
@@ -151,142 +153,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(Machine machine, int position) {
-        WakingUpMachineTask wakeUpTask = new WakingUpMachineTask(machine);
-        wakeUpTask.execute();
+        WakingUpMachineTask wakingUpMachineTask = new WakingUpMachineTask(machine);
+        wakingUpMachineTask.execute();
         String msg = getString(R.string.main_wake_up, machine.getName());
-        Snackbar.make(recyclerView, msg, Snackbar.LENGTH_LONG)
+        Snackbar.make(machineListView, msg, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-    }
-
-    private class MachineListLoader extends AsyncTask<Object,Object,List<Machine>>{
-        MachineListAdapter adapter;
-        Context context;
-
-        public MachineListLoader(Context context, MachineListAdapter adapter) {
-            this.context = context;
-            this.adapter = adapter;
-        }
-
-        @Override
-        protected List<Machine> doInBackground(Object... objects) {
-            MachineDAO machineDAO = new MachineDAO(new DbHelper(context));
-            return machineDAO.getAll();
-        }
-
-        @Override
-        protected void onPostExecute(List<Machine> machines) {
-            adapter.setMachineList(machines);
-        }
-    }
-
-    private class SavingMachineTask extends AsyncTask<Object,Object,Machine>{
-        Machine machine;
-        MachineListAdapter adapter;
-        Context context;
-
-        public SavingMachineTask(Context context, MachineListAdapter adapter, Machine machine) {
-            this.machine = machine;
-            this.adapter = adapter;
-            this.context = context;
-        }
-
-        @Override
-        protected Machine doInBackground(Object... objects) {
-            MachineDAO machineDAO = new MachineDAO(new DbHelper(context));
-            if(machine.getId() == -1){
-                int id = machineDAO.insert(machine);
-                if(id != -1){
-                    machine = new Machine(
-                            id,
-                            machine.getName(),
-                            machine.getMac(),
-                            machine.getIp(),
-                            machine.getPort()
-                    );
-                }
-            } else {
-                machineDAO.update(machine);
-            }
-            return machine;
-        }
-
-        @Override
-        protected void onPostExecute(Machine machine) {
-            List<Machine> machineList = adapter.getMachineList();
-            int index = -1;
-            ListIterator<Machine> iterator = machineList.listIterator();
-            while(iterator.hasNext()){
-                Machine item = iterator.next();
-                if(item.getId() == machine.getId()){
-                    index = iterator.previousIndex();
-                }
-            }
-
-            if(index != -1){
-                machineList.remove(index);
-                machineList.add(index,machine);
-                adapter.notifyItemChanged(index);
-            } else {
-                machineList.add(machine);
-                adapter.notifyItemInserted(machineList.size()-1);
-            }
-        }
-    }
-
-    private class DeleteMachineTask extends AsyncTask<Object,Object,Integer>{
-        Machine machine;
-        MachineListAdapter adapter;
-        Context context;
-
-        public DeleteMachineTask(Context context, MachineListAdapter adapter, Machine machine) {
-            this.machine = machine;
-            this.adapter = adapter;
-            this.context = context;
-        }
-
-        @Override
-        protected Integer doInBackground(Object... objects) {
-            MachineDAO machineDAO = new MachineDAO(new DbHelper(context));
-            return machineDAO.delete(machine);
-        }
-
-        @Override
-        protected void onPostExecute(Integer count) {
-            if(count > 0){
-                List<Machine> machineList = adapter.getMachineList();
-                int index = machineList.indexOf(machine);
-                machineList.remove(index);
-                adapter.notifyItemRemoved(index);
-            }
-        }
-    }
-
-    private class WakingUpMachineTask extends AsyncTask<Object,Object,Object>{
-
-        Machine machine;
-
-        public WakingUpMachineTask(Machine machine) {
-            this.machine = machine;
-        }
-
-        @Override
-        protected Object doInBackground(Object... objects) {
-            WakeOnLan wakeOnLan = WakeOnLan.create(getWakeOnLanType(machine));
-            try {
-                wakeOnLan.wakeUp(machine);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-
-        private WakeOnLan.Type getWakeOnLanType(Machine machine){
-            if(machine.getIp().length() != 0){
-                return WakeOnLan.Type.TARGET;
-            }
-            
-            return WakeOnLan.Type.BROADCAST;
-        }
     }
 }
