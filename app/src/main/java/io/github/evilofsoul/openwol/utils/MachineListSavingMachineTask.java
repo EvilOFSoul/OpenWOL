@@ -27,7 +27,7 @@ public class MachineListSavingMachineTask extends AsyncTask<Object,Object,Machin
 
     @Override
     protected Machine doInBackground(Object... objects) {
-        MachineDAO machineDAO = new MachineDAO(new DbHelper(context));
+        final MachineDAO machineDAO = new MachineDAO(new DbHelper(context));
         if(machine.getId() == -1){
             int id = machineDAO.insert(machine);
             if(id != -1){
@@ -47,19 +47,19 @@ public class MachineListSavingMachineTask extends AsyncTask<Object,Object,Machin
 
     @Override
     protected void onPostExecute(Machine machine) {
-        List<Machine> machineList = adapter.getMachineList();
+        final List<Machine> machineList = adapter.getMachineList();
         int index = -1;
-        ListIterator<Machine> iterator = machineList.listIterator();
+        final ListIterator<Machine> iterator = machineList.listIterator();
         while(iterator.hasNext()){
             Machine item = iterator.next();
             if(item.getId() == machine.getId()){
                 index = iterator.previousIndex();
+                break;
             }
         }
 
         if(index != -1){
-            machineList.remove(index);
-            machineList.add(index,machine);
+            machineList.set(index,machine);
             adapter.notifyItemChanged(index);
         } else {
             machineList.add(machine);

@@ -3,6 +3,7 @@ package io.github.evilofsoul.openwol.utils;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import io.github.evilofsoul.openwol.core.Machine;
@@ -14,22 +15,29 @@ import io.github.evilofsoul.openwol.core.dao.MachineDAO;
  */
 
 public class MachineListLoader extends AsyncTask<Object,Object,List<Machine>> {
-    MachineListAdapter adapter;
-    Context context;
+    WeakReference<MachineListAdapter> adapterWeakReference;
+    WeakReference<Context> contextWeakReference;
 
     public MachineListLoader(Context context, MachineListAdapter adapter) {
-        this.context = context;
-        this.adapter = adapter;
+        this.contextWeakReference = new WeakReference<>(context);
+        this.adapterWeakReference = new WeakReference<>(adapter);
     }
 
     @Override
     protected List<Machine> doInBackground(Object... objects) {
+        Context context = contextWeakReference.get();
+        if(context == null){
+            return  null;
+        }
         MachineDAO machineDAO = new MachineDAO(new DbHelper(context));
         return machineDAO.getAll();
     }
 
     @Override
     protected void onPostExecute(List<Machine> machines) {
-        adapter.setMachineList(machines);
+        MachineListAdapter adapter = adapterWeakReference.get();
+        if(adapter != null) {
+            adapter.setMachineList(machines);
+        }
     }
 }
