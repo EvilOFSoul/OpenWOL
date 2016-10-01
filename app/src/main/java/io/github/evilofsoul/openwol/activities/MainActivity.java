@@ -25,6 +25,7 @@ import io.github.evilofsoul.openwol.utils.MachineListAdapter;
 import io.github.evilofsoul.openwol.R;
 import io.github.evilofsoul.openwol.core.Machine;
 import io.github.evilofsoul.openwol.utils.MachineListLoader;
+import io.github.evilofsoul.openwol.utils.MachineNameComparator;
 import io.github.evilofsoul.openwol.utils.QuickReturnScrollListener;
 import io.github.evilofsoul.openwol.utils.MachineListSavingMachineTask;
 import io.github.evilofsoul.openwol.utils.WakingUpMachineTask;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity
 
         initMachineListView();
 
-        MachineListLoader machineListLoader = new MachineListLoader(this, this.adapter);
+        MachineListLoader machineListLoader = new MachineListLoader(this, this.adapter,new MachineNameComparator());
         machineListLoader.execute();
     }
 
@@ -138,7 +139,8 @@ public class MainActivity extends AppCompatActivity
             }
             Machine machine = (Machine) data.getSerializableExtra("Machine");
             if(machine != null){
-                MachineListSavingMachineTask savingTask = new MachineListSavingMachineTask(this,adapter,machine);
+                MachineListSavingMachineTask savingTask = new MachineListSavingMachineTask(this,
+                        adapter,machine, new MachineNameComparator());
                 savingTask.execute();
             }
         }

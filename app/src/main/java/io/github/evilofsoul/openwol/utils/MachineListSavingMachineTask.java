@@ -3,6 +3,8 @@ package io.github.evilofsoul.openwol.utils;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -18,11 +20,20 @@ public class MachineListSavingMachineTask extends AsyncTask<Object,Object,Machin
     Machine machine;
     MachineListAdapter adapter;
     Context context;
+    Comparator<Machine> machineComparator;
 
     public MachineListSavingMachineTask(Context context, MachineListAdapter adapter, Machine machine) {
         this.machine = machine;
         this.adapter = adapter;
         this.context = context;
+    }
+
+    public MachineListSavingMachineTask(Context context, MachineListAdapter adapter, Machine machine,
+                                        Comparator<Machine> machineComparator) {
+        this.machine = machine;
+        this.adapter = adapter;
+        this.context = context;
+        this.machineComparator = machineComparator;
     }
 
     @Override
@@ -63,7 +74,13 @@ public class MachineListSavingMachineTask extends AsyncTask<Object,Object,Machin
             adapter.notifyItemChanged(index);
         } else {
             machineList.add(machine);
-            adapter.notifyItemInserted(machineList.size()-1);
+            if(machineComparator != null){
+                Collections.sort(machineList,machineComparator);
+                index = machineList.indexOf(machine);
+            } else {
+                index = machineList.size()-1;
+            }
+            adapter.notifyItemInserted(index);
         }
     }
 }
