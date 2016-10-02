@@ -70,7 +70,7 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_black_arrow_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_white_arrow_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
