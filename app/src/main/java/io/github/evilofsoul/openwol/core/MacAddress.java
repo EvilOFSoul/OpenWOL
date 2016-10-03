@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.common.base.Joiner;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,4 +80,19 @@ public class MacAddress implements Serializable{
         return result;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MacAddress that = (MacAddress) o;
+
+        return Arrays.equals(mac, that.mac);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(mac);
+    }
 }

@@ -42,7 +42,7 @@ public class MachineSettingsActivity extends AppCompatActivity implements View.O
         this.initComponent();
 
         Intent intent = this.getIntent();
-        machine = (Machine) intent.getSerializableExtra("Machine");
+        machine = intent.getParcelableExtra("Machine");
         if(machine != null){
             this.machineName.setText(machine.getName());
             this.machineMac.setText(machine.getMac().toString());

@@ -14,7 +14,8 @@ import io.github.evilofsoul.openwol.core.MagicPacketTest;
 
 @Suite.SuiteClasses({
         MacAddressTest.class,
-        MagicPacketTest.class
+        MagicPacketTest.class,
+        MachineTest.class
 })
 public class CoreTestSuite{
 }

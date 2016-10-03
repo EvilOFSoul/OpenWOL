@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity
             if(resultCode != RESULT_OK){
                 return;
             }
-            Machine machine = (Machine) data.getSerializableExtra("Machine");
+            Machine machine = data.getParcelableExtra("Machine");
             if(machine != null){
                 MachineListSavingMachineTask savingTask = new MachineListSavingMachineTask(this,
                         adapter,machine, new MachineNameComparator());
