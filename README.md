@@ -16,7 +16,7 @@ Features
 * Operation with machine's data (adding, storing, removing).
 * Turning on a machine via WI-FI.
 
-Current tasks
+Current Tasks
 ---------
 
 * Releasing the first version of the app.
