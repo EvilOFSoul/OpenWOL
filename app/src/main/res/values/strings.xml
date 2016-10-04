@@ -24,15 +24,15 @@
 
     <!--Ip text validator-->
     <string name="ip_text_validator_format_error">IP must consist of 4 parts, which are separated by dot</string>
-    <string name="ip_text_vlidator_invalid_part_error">Even part of IP must be between 0 and 255</string>
+    <string name="ip_text_vlidator_invalid_part_error">Each part of IP must be between 0 and 255</string>
     <string name="ip_text_validator_end_with_dor_error">IP must not end with dot</string>
 
    <!--Mac text validator-->
     <string name="mac_text_validator_format_error">"MAC must contain six hex numbers separated by \":\" "</string>
 
    <!--Port text validator-->
-    <string name="port_text_validator_out_of_range_error">Port value must be between 1 and 65535</string>
-    <string name="port_text_validator_format_error">Port value must contain only decimal numbers</string>
+    <string name="port_text_validator_out_of_range_error">Port number must be between 1 and 65535</string>
+    <string name="port_text_validator_format_error">Port number must contain only decimal numbers</string>
 
     <!--Required field text validator-->
     <string name="required_field_text_validator_error">This field is required</string>
