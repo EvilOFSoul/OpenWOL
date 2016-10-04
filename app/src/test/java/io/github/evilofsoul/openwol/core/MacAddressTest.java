@@ -66,6 +66,7 @@ public class MacAddressTest{
         for (String mac : validData) {
             macAddress.set(mac);
             String formattedMac = mac.replace('-',':').toLowerCase();
+            assertThat(macAddress.toString(), is(formattedMac));
         }
     }
 
