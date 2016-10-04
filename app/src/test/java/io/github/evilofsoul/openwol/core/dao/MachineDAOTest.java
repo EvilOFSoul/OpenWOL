@@ -23,6 +23,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -80,18 +81,31 @@ public class MachineDAOTest {
     public void getById_ValidId_Machine(){
         Machine machine = testMachineList.get(0);
         final int id = machineDAO.insert(machine);
+        machine = new Machine(id,machine.getName(),machine.getMac(),machine.getIp(),
+                machine.getPort());
 
         Machine machineFormDb = machineDAO.getById(id);
         assertNotNull(machineFormDb);
-        assertThat(machineFormDb.getName(), is(machine.getName()));
-        assertThat(machineFormDb.getMac().toString(), is(machine.getMac().toString()));
+        assertThat(machineFormDb, samePropertyValuesAs(machine));
     }
 
     @Test
     public void getAll(){
-        machineDAO.insertAll(testMachineList);
+        List<Integer> ids = machineDAO.insertAll(testMachineList);
+        List<Machine> machineListWithId = new ArrayList<>();
+        int index = 0;
+        for (Machine item: testMachineList) {
+            machineListWithId.add(new Machine(
+                    ids.get(index), item.getName(), item.getMac(), item.getIp(), item.getPort()
+            ));
+            index++;
+        }
+
         List<Machine> machineListFormDb = machineDAO.getAll();
         assertThat(machineListFormDb, hasSize(testMachineList.size()));
+        for(int i=0; i<machineListFormDb.size(); i++){
+            assertThat(machineListFormDb.get(i), samePropertyValuesAs(machineListWithId.get(i)));
+        }
     }
 
     @Test
@@ -119,8 +133,8 @@ public class MachineDAOTest {
         final int updatedCount = machineDAO.update(machine);
         assertThat(updatedCount,is(1));
 
-        machine = machineDAO.getById(id);
-        assertThat(machine.getName(),equalTo(newMachineName));
+        final Machine machineFromDb = machineDAO.getById(id);
+        assertThat(machine,samePropertyValuesAs(machineFromDb));
     }
 
     @Test
